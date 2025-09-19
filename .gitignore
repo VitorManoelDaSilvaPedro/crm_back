@@ -3,3 +3,8 @@ node_modules
 package-lock.json
 .env
 /src/generated/prisma
+generated/
+prisma/generated/
+node_modules/.prisma/
+*.db
+*.db-journal

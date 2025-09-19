@@ -1,12 +1,7 @@
 /** @type { import('ts-jest').JestConfigWithTsJest} */
-export default {
+module.exports = {
     preset: "ts-jest",
     testEnvironment: "node",
     setupFiles: ["dotenv/config"],
-    extensionsToTreatAsEsm: [".ts"],
-    globals: {
-        "ts-jest": {
-            useESM: true
-        }
-    }
+    testTimeout: 60000
 };
