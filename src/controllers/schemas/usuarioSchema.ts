@@ -82,10 +82,9 @@ export const updateUsuarioSchema = yup.object({
 // Schema para parâmetros de ID
 export const usuarioIdSchema = yup.object({
   id: yup
-    .number()
+    .string()
     .required('ID é obrigatório')
-    .positive('ID deve ser um número positivo')
-    .integer('ID deve ser um número inteiro')
+    .uuid('ID deve ser um UUID válido')
 }).strict().noUnknown('Parâmetros não permitidos foram enviados');
 
 // Schema para login

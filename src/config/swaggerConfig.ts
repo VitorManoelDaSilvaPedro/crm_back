@@ -19,6 +19,11 @@ const options = {
                 basicAuth: {
                     type: 'http',
                     scheme: 'basic'
+                },
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
                 }
             },
             schemas: {
@@ -73,6 +78,143 @@ const options = {
                         }
                     }
                 },
+                Usuario: {
+                    type: 'object',
+                    required: ['id', 'nome', 'email', 'celular', 'nivel'],
+                    properties: {
+                        id: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID único do usuário'
+                        },
+                        nome: {
+                            type: 'string',
+                            description: 'Nome do usuário'
+                        },
+                        foto: {
+                            type: 'string',
+                            nullable: true,
+                            description: 'URL da foto do usuário'
+                        },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                            description: 'Email do usuário'
+                        },
+                        celular: {
+                            type: 'string',
+                            description: 'Celular do usuário'
+                        },
+                        nivel: {
+                            type: 'string',
+                            enum: ['admin', 'user', 'manager'],
+                            description: 'Nível de acesso do usuário'
+                        },
+                        codigo: {
+                            type: 'string',
+                            nullable: true,
+                            description: 'Código do usuário'
+                        },
+                        created_at: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Data de criação'
+                        },
+                        updated_at: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Data de atualização'
+                        }
+                    }
+                },
+                UsuarioInput: {
+                    type: 'object',
+                    required: ['nome', 'email', 'celular', 'senha', 'nivel'],
+                    properties: {
+                        nome: {
+                            type: 'string',
+                            description: 'Nome do usuário'
+                        },
+                        foto: {
+                            type: 'string',
+                            description: 'URL da foto do usuário'
+                        },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                            description: 'Email do usuário'
+                        },
+                        celular: {
+                            type: 'string',
+                            description: 'Celular no formato (XX) XXXXX-XXXX'
+                        },
+                        senha: {
+                            type: 'string',
+                            description: 'Senha do usuário'
+                        },
+                        nivel: {
+                            type: 'string',
+                            enum: ['admin', 'user', 'manager'],
+                            description: 'Nível de acesso do usuário'
+                        },
+                        codigo: {
+                            type: 'string',
+                            description: 'Código do usuário'
+                        }
+                    }
+                },
+                UsuarioUpdateInput: {
+                    type: 'object',
+                    properties: {
+                        nome: {
+                            type: 'string',
+                            description: 'Nome do usuário'
+                        },
+                        foto: {
+                            type: 'string',
+                            description: 'URL da foto do usuário'
+                        },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                            description: 'Email do usuário'
+                        },
+                        celular: {
+                            type: 'string',
+                            description: 'Celular no formato (XX) XXXXX-XXXX'
+                        },
+                        senha: {
+                            type: 'string',
+                            description: 'Nova senha do usuário'
+                        },
+                        nivel: {
+                            type: 'string',
+                            enum: ['admin', 'user', 'manager'],
+                            description: 'Nível de acesso do usuário'
+                        },
+                        codigo: {
+                            type: 'string',
+                            description: 'Código do usuário'
+                        }
+                    }
+                },
+                LoginInput: {
+                    type: 'object',
+                    required: ['email', 'senha'],
+                    properties: {
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                            description: 'Email do usuário',
+                            example: 'admin@crm.com'
+                        },
+                        senha: {
+                            type: 'string',
+                            description: 'Senha do usuário',
+                            example: 'admin123'
+                        }
+                    }
+                },
                 Error: {
                     type: 'object',
                     properties: {
@@ -86,7 +228,7 @@ const options = {
         },
         security: [
             {
-                basicAuth: []
+                bearerAuth: []
             }
         ]
     },

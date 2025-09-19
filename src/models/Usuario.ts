@@ -1,5 +1,5 @@
 export interface Usuario {
-    id: number;
+    id: string;
     
     nome: string;
     foto?: string | null;
@@ -9,6 +9,6 @@ export interface Usuario {
     nivel: string;
     codigo?: string | null;
 
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

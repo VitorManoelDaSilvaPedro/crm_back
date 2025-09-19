@@ -21,3 +21,16 @@ model Departamento {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
+
+model Usuario {
+  id String @id @default(uuid())
+  nome String
+  foto String?
+  email String @unique
+  celular String
+  senha String
+  nivel String
+  codigo String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
