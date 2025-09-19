@@ -185,7 +185,7 @@ describe("Testes da API de Usuários", () => {
             email: "joao@email.com",
             celular: "(11) 99999-9999",
             senha: "123456",
-            nivel: "nivel-invalido"
+            nivel: "invalid"
         };
 
         try {
@@ -196,7 +196,7 @@ describe("Testes da API de Usuários", () => {
                 expect.arrayContaining([
                     expect.objectContaining({
                         field: "nivel",
-                        message: "Nível deve ser admin, user ou manager"
+                        message: "Nível deve ser admin ou user"
                     })
                 ])
             );
@@ -478,11 +478,11 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'nivel-invalido'
+        nivel: 'invalid'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
-        .rejects.toThrow('Nível deve ser admin, user ou manager');
+        .rejects.toThrow('Nível deve ser admin ou user');
     });
 
     it('Rejeitar campos que não existem no schema', async () => {

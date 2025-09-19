@@ -10,37 +10,43 @@ export class UsuarioRepository {
     }
 
     async create(data: { nome: string; foto?: string | null; email: string; celular: string; senha: string; nivel: string; codigo?: string | null }): Promise<Usuario> {
-        return await this.prisma.usuario.create({
+        const usuario = await this.prisma.usuario.create({
             data
         });
+        return usuario as Usuario;
     }
 
     async findAll(): Promise<Usuario[]> {
-        return await this.prisma.usuario.findMany();
+        const usuarios = await this.prisma.usuario.findMany();
+        return usuarios as Usuario[];
     }
 
     async findById(id: string): Promise<Usuario | null> {
-        return await this.prisma.usuario.findUnique({
+        const usuario = await this.prisma.usuario.findUnique({
             where: { id }
         });
+        return usuario as Usuario | null;
     }
 
     async findByEmail(email: string): Promise<Usuario | null> {
-        return await this.prisma.usuario.findUnique({
+        const usuario = await this.prisma.usuario.findUnique({
             where: { email }
         });
+        return usuario as Usuario | null;
     }
 
     async update(id: string, data: { nome?: string; foto?: string | null; email?: string; celular?: string; senha?: string; nivel?: string; codigo?: string | null }): Promise<Usuario> {
-        return await this.prisma.usuario.update({
+        const usuario = await this.prisma.usuario.update({
             where: { id },
             data
         });
+        return usuario as Usuario;
     }
 
     async delete(id: string): Promise<Usuario> {
-        return await this.prisma.usuario.delete({
+        const usuario = await this.prisma.usuario.delete({
             where: { id }
         });
+        return usuario as Usuario;
     }
 }

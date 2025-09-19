@@ -33,7 +33,7 @@ export const createUsuarioSchema = yup.object({
   nivel: yup
     .string()
     .required('Nível é obrigatório')
-    .oneOf(['admin', 'user', 'manager'], 'Nível deve ser admin, user ou manager')
+    .oneOf(['admin', 'user'], 'Nível deve ser admin ou user')
     .trim(),
   codigo: yup
     .string()
@@ -70,7 +70,7 @@ export const updateUsuarioSchema = yup.object({
     .max(100, 'Senha deve ter no máximo 100 caracteres'),
   nivel: yup
     .string()
-    .oneOf(['admin', 'user', 'manager'], 'Nível deve ser admin, user ou manager')
+    .oneOf(['admin', 'user'], 'Nível deve ser admin ou user')
     .trim(),
   codigo: yup
     .string()

@@ -1,3 +1,5 @@
+export type NivelUsuario = 'admin' | 'user';
+
 export interface Usuario {
     id: string;
     
@@ -6,7 +8,7 @@ export interface Usuario {
     email: string;
     celular: string;
     senha: string;
-    nivel: string;
+    nivel: NivelUsuario;
     codigo?: string | null;
 
     created_at: Date;

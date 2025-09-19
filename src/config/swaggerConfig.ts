@@ -107,7 +107,7 @@ const options = {
                         },
                         nivel: {
                             type: 'string',
-                            enum: ['admin', 'user', 'manager'],
+                            enum: ['admin', 'user'],
                             description: 'Nível de acesso do usuário'
                         },
                         codigo: {
@@ -154,7 +154,7 @@ const options = {
                         },
                         nivel: {
                             type: 'string',
-                            enum: ['admin', 'user', 'manager'],
+                            enum: ['admin', 'user'],
                             description: 'Nível de acesso do usuário'
                         },
                         codigo: {
@@ -189,7 +189,7 @@ const options = {
                         },
                         nivel: {
                             type: 'string',
-                            enum: ['admin', 'user', 'manager'],
+                            enum: ['admin', 'user'],
                             description: 'Nível de acesso do usuário'
                         },
                         codigo: {
