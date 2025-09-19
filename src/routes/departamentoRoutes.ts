@@ -1,8 +1,12 @@
 import { Router } from 'express';
 import { DepartamentoController } from '../controllers/DepartamentoController';
+import { adminMiddleware } from '../middleware/adminMiddleware';
 
 const departamentoRoutes = Router();
 const departamentoController = new DepartamentoController();
+
+// Aplicar middleware de admin em todas as rotas de departamentos
+departamentoRoutes.use(adminMiddleware);
 
 /**
  * @swagger

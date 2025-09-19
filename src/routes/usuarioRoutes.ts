@@ -1,8 +1,12 @@
 import { Router } from 'express';
 import { UsuarioController } from '../controllers/UsuarioController';
+import { adminMiddleware } from '../middleware/adminMiddleware';
 
 const usuarioRoutes = Router();
 const usuarioController = new UsuarioController();
+
+// Aplicar middleware de admin em todas as rotas de usuários
+usuarioRoutes.use(adminMiddleware);
 
 /**
  * @swagger

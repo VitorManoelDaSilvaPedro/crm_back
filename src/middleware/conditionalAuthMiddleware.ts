@@ -3,8 +3,13 @@ import { authMiddleware } from './authMiddleware';
 import { UsuarioRepository } from '../repositories/UsuarioRepository';
 
 export const conditionalAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    // Durante testes, desabilitar autenticação
+    // Durante testes, simular usuário admin autenticado
     if (process.env.NODE_ENV === 'test') {
+        req.user = {
+            userId: 'test-admin-id',
+            email: 'admin@test.com',
+            nivel: 'admin'
+        };
         return next();
     }
     
