@@ -3,8 +3,13 @@ import { authMiddleware } from './authMiddleware';
 import { UsuarioRepository } from '../repositories/UsuarioRepository';
 
 export const conditionalAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    // Durante testes, simular usuário admin autenticado
+    // Durante testes, verificar se há token JWT válido primeiro
     if (process.env.NODE_ENV === 'test') {
+        // Se há header de autorização, usar autenticação JWT normal
+        if (req.headers.authorization) {
+            return authMiddleware(req, res, next);
+        }
+        // Senão, simular usuário admin para testes legados
         req.user = {
             userId: 'test-admin-id',
             email: 'admin@test.com',
@@ -18,8 +23,8 @@ export const conditionalAuthMiddleware = async (req: Request, res: Response, nex
         return next();
     }
     
-    // Se for POST /usuarios, verificar se já existem usuários
-    if (req.method === 'POST' && req.path === '/usuarios') {
+    // Se for POST /usuarios, verificar se já existem usuários (apenas em desenvolvimento)
+    if (req.method === 'POST' && req.path === '/usuarios' && process.env.NODE_ENV === 'development') {
         try {
             const usuarioRepository = new UsuarioRepository();
             const usuarios = await usuarioRepository.findAll();
