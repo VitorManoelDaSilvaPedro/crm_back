@@ -11,6 +11,7 @@ type CreateUsuarioData = {
     senha: string;
     nivel: string;
     codigo?: string | null | undefined;
+    id_departamento: string;
 };
 
 type UpdateUsuarioData = {
@@ -21,6 +22,7 @@ type UpdateUsuarioData = {
     senha?: string | undefined;
     nivel?: string | undefined;
     codigo?: string | null | undefined;
+    id_departamento?: string | undefined;
 };
 
 export class UsuarioService {
@@ -39,7 +41,8 @@ export class UsuarioService {
             email: data.email,
             celular: data.celular,
             senha: senhaHash,
-            nivel: data.nivel
+            nivel: data.nivel,
+            id_departamento: data.id_departamento
         };
         
         if (data.foto !== undefined) createData.foto = data.foto;
@@ -87,6 +90,7 @@ export class UsuarioService {
         if (data.senha !== undefined) {
             updateData.senha = await bcrypt.hash(data.senha, 10);
         }
+        if (data.id_departamento !== undefined) updateData.id_departamento = data.id_departamento;
 
         const usuario = await this.usuarioRepository.update(id, updateData);
         

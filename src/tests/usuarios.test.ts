@@ -12,9 +12,24 @@ const BASE_URL = "http://localhost:4000";
 
 describe("Testes da API de Usuários", () => {
     let usuarioId: string;
+    let departamentoId: string;
 
     beforeAll(async () => {
         await DatabaseFactory.connect();
+        
+        // Obter um departamento existente para usar nos testes
+        const departamentoResponse = await axios.get(`${BASE_URL}/departamentos`);
+        if (departamentoResponse.data.length > 0) {
+            departamentoId = departamentoResponse.data[0].id;
+        } else {
+            // Criar um departamento se não existir nenhum
+            const novoDepartamento = {
+                nome: "Departamento Teste",
+                ativo: true
+            };
+            const createResponse = await axios.post(`${BASE_URL}/departamentos`, novoDepartamento);
+            departamentoId = createResponse.data.id;
+        }
         
         await new Promise<void>((resolve) => {
             if (server.listening) {
@@ -42,7 +57,8 @@ describe("Testes da API de Usuários", () => {
             email: "joao.silva@email.com",
             celular: "(11) 99999-9999",
             senha: "123456",
-            nivel: "user"
+            nivel: "user",
+            id_departamento: departamentoId
         };
 
         const response = await axios.post(`${BASE_URL}/usuarios`, novoUsuario);
@@ -65,7 +81,8 @@ describe("Testes da API de Usuários", () => {
             email: "teste@email.com",
             celular: "(11) 99999-9999",
             senha: "123456",
-            nivel: "user"
+            nivel: "user",
+            id_departamento: departamentoId
         };
 
         try {
@@ -89,7 +106,8 @@ describe("Testes da API de Usuários", () => {
             nome: "João Silva",
             celular: "(11) 99999-9999",
             senha: "123456",
-            nivel: "user"
+            nivel: "user",
+            id_departamento: departamentoId
         };
 
         try {
@@ -113,7 +131,8 @@ describe("Testes da API de Usuários", () => {
             email: "email-invalido",
             celular: "(11) 99999-9999",
             senha: "123456",
-            nivel: "user"
+            nivel: "user",
+            id_departamento: departamentoId
         };
 
         try {
@@ -137,7 +156,8 @@ describe("Testes da API de Usuários", () => {
             email: "joao@email.com",
             celular: "11999999999",
             senha: "123456",
-            nivel: "user"
+            nivel: "user",
+            id_departamento: departamentoId
         };
 
         try {
@@ -161,7 +181,8 @@ describe("Testes da API de Usuários", () => {
             email: "joao@email.com",
             celular: "(11) 99999-9999",
             senha: "123",
-            nivel: "user"
+            nivel: "user",
+            id_departamento: departamentoId
         };
 
         try {
@@ -185,7 +206,8 @@ describe("Testes da API de Usuários", () => {
             email: "joao@email.com",
             celular: "(11) 99999-9999",
             senha: "123456",
-            nivel: "invalid"
+            nivel: "invalid",
+            id_departamento: departamentoId
         };
 
         try {
@@ -210,6 +232,7 @@ describe("Testes da API de Usuários", () => {
             celular: "(11) 99999-9999",
             senha: "123456",
             nivel: "user",
+            id_departamento: departamentoId,
             campoExtra: "não permitido"
         };
 
@@ -374,7 +397,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       const resultado = await createUsuarioSchema.validate(dadosValidos);
@@ -389,7 +413,8 @@ describe('Validação de Dados - Usuário', () => {
         celular: '(11) 99999-9999',
         senha: '123456',
         nivel: 'admin',
-        codigo: 'ABC123'
+        codigo: 'ABC123',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       const resultado = await createUsuarioSchema.validate(dadosValidos);
@@ -401,7 +426,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -414,7 +440,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -426,7 +453,8 @@ describe('Validação de Dados - Usuário', () => {
         nome: 'João Silva',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -439,7 +467,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'email-invalido',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -452,7 +481,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '11999999999',
         senha: '123456',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -465,7 +495,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '(11) 99999-9999',
         senha: '123',
-        nivel: 'user'
+        nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -478,7 +509,8 @@ describe('Validação de Dados - Usuário', () => {
         email: 'joao@email.com',
         celular: '(11) 99999-9999',
         senha: '123456',
-        nivel: 'invalid'
+        nivel: 'invalid',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos))
@@ -492,11 +524,39 @@ describe('Validação de Dados - Usuário', () => {
         celular: '(11) 99999-9999',
         senha: '123456',
         nivel: 'user',
+        id_departamento: '123e4567-e89b-12d3-a456-426614174000',
         campoExtra: 'não permitido'
       };
 
       await expect(createUsuarioSchema.validate(dadosInvalidos, { stripUnknown: false }))
         .rejects.toThrow('Campos não permitidos foram enviados');
+    });
+
+    it('Rejeitar quando id_departamento não for enviado', async () => {
+      const dadosInvalidos = {
+        nome: 'João Silva',
+        email: 'joao@email.com',
+        celular: '(11) 99999-9999',
+        senha: '123456',
+        nivel: 'user'
+      };
+
+      await expect(createUsuarioSchema.validate(dadosInvalidos))
+        .rejects.toThrow('Departamento é obrigatório');
+    });
+
+    it('Rejeitar id_departamento com formato inválido', async () => {
+      const dadosInvalidos = {
+        nome: 'João Silva',
+        email: 'joao@email.com',
+        celular: '(11) 99999-9999',
+        senha: '123456',
+        nivel: 'user',
+        id_departamento: 'id-invalido'
+      };
+
+      await expect(createUsuarioSchema.validate(dadosInvalidos))
+        .rejects.toThrow('ID do departamento deve ser um UUID válido');
     });
   });
 

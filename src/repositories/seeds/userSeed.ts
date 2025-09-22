@@ -26,6 +26,15 @@ export class UserSeed {
                 return;
             }
 
+            // Obter primeiro departamento para associar ao admin
+            const prisma = DatabaseFactory.getInstance();
+            const departamento = await prisma.departamento.findFirst();
+            
+            if (!departamento) {
+                console.log('⚠️  Nenhum departamento encontrado. Crie um departamento primeiro.');
+                return;
+            }
+
             // Criar usuário admin padrão
             const adminUser = {
                 nome: 'Administrador',
@@ -33,7 +42,8 @@ export class UserSeed {
                 celular: '(11) 99999-9999',
                 senha: 'admin123',
                 nivel: 'admin' as const,
-                codigo: 'ADMIN001'
+                codigo: 'ADMIN001',
+                id_departamento: departamento.id
             };
 
             await this.usuarioService.criarUsuario(adminUser);

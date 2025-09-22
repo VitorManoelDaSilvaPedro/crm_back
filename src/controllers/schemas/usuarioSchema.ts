@@ -39,6 +39,11 @@ export const createUsuarioSchema = yup.object({
     .string()
     .nullable()
     .max(50, 'Código deve ter no máximo 50 caracteres')
+    .trim(),
+  id_departamento: yup
+    .string()
+    .required('Departamento é obrigatório')
+    .uuid('ID do departamento deve ser um UUID válido')
     .trim()
 }).strict().noUnknown('Campos não permitidos foram enviados');
 
@@ -76,6 +81,10 @@ export const updateUsuarioSchema = yup.object({
     .string()
     .nullable()
     .max(50, 'Código deve ter no máximo 50 caracteres')
+    .trim(),
+  id_departamento: yup
+    .string()
+    .uuid('ID do departamento deve ser um UUID válido')
     .trim()
 }).strict().noUnknown('Campos não permitidos foram enviados');
 

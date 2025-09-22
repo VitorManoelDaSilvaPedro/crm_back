@@ -10,6 +10,7 @@ export interface Usuario {
     senha: string;
     nivel: NivelUsuario;
     codigo?: string | null;
+    id_departamento: string;
 
     created_at: Date;
     updated_at: Date;

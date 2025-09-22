@@ -20,6 +20,8 @@ model Departamento {
   ativo Boolean
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  
+  usuarios Usuario[]
 }
 
 model Usuario {
@@ -31,6 +33,9 @@ model Usuario {
   senha String
   nivel String
   codigo String?
+  id_departamento String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  
+  departamento Departamento @relation(fields: [id_departamento], references: [id])
 }

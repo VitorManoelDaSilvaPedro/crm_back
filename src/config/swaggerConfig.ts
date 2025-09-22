@@ -80,7 +80,7 @@ const options = {
                 },
                 Usuario: {
                     type: 'object',
-                    required: ['id', 'nome', 'email', 'celular', 'nivel'],
+                    required: ['id', 'nome', 'email', 'celular', 'nivel', 'id_departamento'],
                     properties: {
                         id: {
                             type: 'string',
@@ -115,6 +115,11 @@ const options = {
                             nullable: true,
                             description: 'Código do usuário'
                         },
+                        id_departamento: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID do departamento do usuário'
+                        },
                         created_at: {
                             type: 'string',
                             format: 'date-time',
@@ -129,7 +134,7 @@ const options = {
                 },
                 UsuarioInput: {
                     type: 'object',
-                    required: ['nome', 'email', 'celular', 'senha', 'nivel'],
+                    required: ['nome', 'email', 'celular', 'senha', 'nivel', 'id_departamento'],
                     properties: {
                         nome: {
                             type: 'string',
@@ -160,6 +165,11 @@ const options = {
                         codigo: {
                             type: 'string',
                             description: 'Código do usuário'
+                        },
+                        id_departamento: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID do departamento do usuário'
                         }
                     }
                 },
@@ -195,6 +205,11 @@ const options = {
                         codigo: {
                             type: 'string',
                             description: 'Código do usuário'
+                        },
+                        id_departamento: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID do departamento do usuário'
                         }
                     }
                 },

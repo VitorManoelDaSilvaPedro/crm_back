@@ -9,7 +9,7 @@ export class UsuarioRepository {
         this.prisma = DatabaseFactory.getInstance();
     }
 
-    async create(data: { nome: string; foto?: string | null; email: string; celular: string; senha: string; nivel: string; codigo?: string | null }): Promise<Usuario> {
+    async create(data: { nome: string; foto?: string | null; email: string; celular: string; senha: string; nivel: string; codigo?: string | null; id_departamento: string }): Promise<Usuario> {
         const usuario = await this.prisma.usuario.create({
             data
         });
@@ -35,7 +35,7 @@ export class UsuarioRepository {
         return usuario as Usuario | null;
     }
 
-    async update(id: string, data: { nome?: string; foto?: string | null; email?: string; celular?: string; senha?: string; nivel?: string; codigo?: string | null }): Promise<Usuario> {
+    async update(id: string, data: { nome?: string; foto?: string | null; email?: string; celular?: string; senha?: string; nivel?: string; codigo?: string | null; id_departamento?: string }): Promise<Usuario> {
         const usuario = await this.prisma.usuario.update({
             where: { id },
             data
