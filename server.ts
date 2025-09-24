@@ -12,7 +12,11 @@ dotenv.config()
 
 const server = Express();
 
-server.use(cors())
+server.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
 server.use(Express.json());
 
 // Rotas do Swagger (antes das rotas da API)

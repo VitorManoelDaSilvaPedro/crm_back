@@ -13,3 +13,12 @@ export {
   usuarioIdSchema,
   loginUsuarioSchema
 } from './usuarioSchema';
+
+// Exportações do domínio Board
+export {
+  createBoardSchema,
+  updateBoardSchema,
+  updateBoardStatusSchema,
+  listBoardsQuerySchema,
+  boardIdSchema
+} from './boardSchema';

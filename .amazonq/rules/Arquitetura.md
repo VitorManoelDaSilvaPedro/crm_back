@@ -1,0 +1,1 @@
+A arquitetura dos projetos estão na estrutura CSMR ( controller, service, model, repository ). Você deve sempre seguir esta estrutura.

@@ -230,6 +230,74 @@ const options = {
                         }
                     }
                 },
+                Board: {
+                    type: 'object',
+                    required: ['id', 'nome', 'ativo'],
+                    properties: {
+                        id: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID único do board'
+                        },
+                        nome: {
+                            type: 'string',
+                            description: 'Nome do board'
+                        },
+                        ativo: {
+                            type: 'boolean',
+                            description: 'Status ativo/inativo'
+                        },
+                        created_at: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Data de criação'
+                        },
+                        updated_at: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Data de atualização'
+                        }
+                    }
+                },
+                BoardInput: {
+                    type: 'object',
+                    required: ['nome'],
+                    properties: {
+                        nome: {
+                            type: 'string',
+                            description: 'Nome do board',
+                            minLength: 2,
+                            maxLength: 100
+                        },
+                        ativo: {
+                            type: 'boolean',
+                            description: 'Status ativo/inativo',
+                            default: true
+                        }
+                    }
+                },
+                BoardUpdateInput: {
+                    type: 'object',
+                    required: ['nome'],
+                    properties: {
+                        nome: {
+                            type: 'string',
+                            description: 'Nome do board',
+                            minLength: 2,
+                            maxLength: 100
+                        }
+                    }
+                },
+                BoardStatusInput: {
+                    type: 'object',
+                    required: ['ativo'],
+                    properties: {
+                        ativo: {
+                            type: 'boolean',
+                            description: 'Status ativo/inativo do board'
+                        }
+                    }
+                },
                 Error: {
                     type: 'object',
                     properties: {

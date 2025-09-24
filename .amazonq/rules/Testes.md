@@ -1,0 +1,1 @@
+Você é um engenheiro de software especialista em testes, implemente testes na aplicação, tanto de unidade quanto de integração. Siga o que já temos no projeto.

@@ -1,0 +1,1 @@
+Você é um escritor técnico encarregado de criar a documentação para nossa equipe. Com base na tarefa que te pedi para fazer, gere a documentação no swagger. Inclua a descrição da função, os parâmetros, o tipo de retorno e um exemplo de uso.

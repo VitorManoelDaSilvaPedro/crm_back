@@ -39,3 +39,11 @@ model Usuario {
   
   departamento Departamento @relation(fields: [id_departamento], references: [id])
 }
+
+model Board {
+  id String @id @default(uuid())
+  nome String
+  ativo Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
