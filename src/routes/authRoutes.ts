@@ -34,11 +34,20 @@ const usuarioController = new UsuarioController();
  *                 usuario:
  *                   $ref: '#/components/schemas/Usuario'
  *       401:
- *         description: Credenciais inválidas
+ *         description: Credenciais inválidas ou usuário desativado
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             examples:
+ *               credenciais_invalidas:
+ *                 summary: Credenciais inválidas
+ *                 value:
+ *                   message: "Credenciais inválidas"
+ *               usuario_desativado:
+ *                 summary: Usuário desativado
+ *                 value:
+ *                   message: "Usuário desativado"
  */
 authRoutes.post('/auth/login', (req, res) => usuarioController.login(req, res));
 

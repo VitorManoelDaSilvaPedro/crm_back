@@ -34,6 +34,7 @@ model Usuario {
   nivel String
   codigo String?
   id_departamento String
+  ativo Boolean @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   

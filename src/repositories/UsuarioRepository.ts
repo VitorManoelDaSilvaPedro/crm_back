@@ -17,7 +17,11 @@ export class UsuarioRepository {
     }
 
     async findAll(): Promise<Usuario[]> {
-        const usuarios = await this.prisma.usuario.findMany();
+        const usuarios = await this.prisma.usuario.findMany({
+            include: {
+                departamento: true
+            }
+        });
         return usuarios as Usuario[];
     }
 
@@ -44,8 +48,17 @@ export class UsuarioRepository {
     }
 
     async delete(id: string): Promise<Usuario> {
-        const usuario = await this.prisma.usuario.delete({
-            where: { id }
+        const usuario = await this.prisma.usuario.update({
+            where: { id },
+            data: { ativo: false }
+        });
+        return usuario as Usuario;
+    }
+
+    async reativar(id: string): Promise<Usuario> {
+        const usuario = await this.prisma.usuario.update({
+            where: { id },
+            data: { ativo: true }
         });
         return usuario as Usuario;
     }

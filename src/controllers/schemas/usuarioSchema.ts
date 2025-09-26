@@ -45,7 +45,7 @@ export const createUsuarioSchema = yup.object({
     .required('Departamento é obrigatório')
     .uuid('ID do departamento deve ser um UUID válido')
     .trim()
-}).strict().noUnknown('Campos não permitidos foram enviados');
+});
 
 // Schema para atualização de usuário
 export const updateUsuarioSchema = yup.object({

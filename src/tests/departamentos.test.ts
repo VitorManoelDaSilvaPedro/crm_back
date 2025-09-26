@@ -12,6 +12,7 @@ const BASE_URL = "http://localhost:4000";
 
 describe("Testes da API de Departamentos", () => {
     let departamentoId: string;
+    let createdDepartmentIds: string[] = [];
 
     beforeAll(async () => {
         await DatabaseFactory.connect();
@@ -28,6 +29,20 @@ describe("Testes da API de Departamentos", () => {
     }, 10000);
 
     afterAll(async () => {
+        // Limpar dados de teste criados
+        const prisma = DatabaseFactory.getInstance();
+        try {
+            if (createdDepartmentIds.length > 0) {
+                await prisma.departamento.deleteMany({
+                    where: {
+                        id: { in: createdDepartmentIds }
+                    }
+                });
+            }
+        } catch (error) {
+            console.log("Erro ao limpar dados de teste:", error);
+        }
+
         await new Promise<void>((resolve) => {
             server.close(() => {
                 resolve();
@@ -54,6 +69,7 @@ describe("Testes da API de Departamentos", () => {
         expect(response.data).toHaveProperty("updated_at");
 
         departamentoId = response.data.id;
+        createdDepartmentIds.push(departamentoId);
     });
 
     it("Não criar departamento sem nome obrigatório", async () => {

@@ -11,6 +11,7 @@ export interface Usuario {
     nivel: NivelUsuario;
     codigo?: string | null;
     id_departamento: string;
+    ativo: boolean;
 
     created_at: Date;
     updated_at: Date;

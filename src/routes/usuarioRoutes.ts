@@ -147,6 +147,33 @@ usuarioRoutes.put('/usuarios/:id', (req, res) => usuarioController.atualizar(req
  */
 usuarioRoutes.delete('/usuarios/:id', (req, res) => usuarioController.deletar(req, res));
 
-
+/**
+ * @swagger
+ * /usuarios/{id}/reativar:
+ *   patch:
+ *     summary: Reativar usuário
+ *     tags: [Usuários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID do usuário
+ *     responses:
+ *       200:
+ *         description: Usuário reativado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Usuário não encontrado
+ */
+usuarioRoutes.patch('/usuarios/:id/reativar', (req, res) => usuarioController.reativar(req, res));
 
 export default usuarioRoutes;

@@ -18,7 +18,7 @@ export class UsuarioController {
         try {
             const validatedData = await createUsuarioSchema.validate(req.body, { 
                 abortEarly: false,
-                stripUnknown: false 
+                stripUnknown: true 
             });
             
             const usuario = await this.usuarioService.criarUsuario(validatedData);
@@ -138,7 +138,31 @@ export class UsuarioController {
                 }));
                 return res.status(400).json({ message: 'Dados inválidos', errors });
             }
-            const status = error.message === 'Credenciais inválidas' ? 401 : 500;
+            const status = error.message === 'Credenciais inválidas' || error.message === 'Usuário desativado' ? 401 : 500;
+            res.status(status).json({ message: error.message });
+        }
+    }
+
+    async reativar(req: Request, res: Response) {
+        try {
+            const validatedParams = await usuarioIdSchema.validate({
+                id: req.params.id
+            }, { 
+                abortEarly: false,
+                stripUnknown: false 
+            });
+            
+            const resultado = await this.usuarioService.reativarUsuario(validatedParams.id);
+            res.status(200).json(resultado);
+        } catch (error: any) {
+            if (error.name === 'ValidationError') {
+                const errors = error.inner.map((err: any) => ({
+                    field: err.path,
+                    message: err.message
+                }));
+                return res.status(400).json({ message: 'Parâmetros inválidos', errors });
+            }
+            const status = error.message === 'Usuário não encontrado' ? 404 : 500;
             res.status(status).json({ message: error.message });
         }
     }

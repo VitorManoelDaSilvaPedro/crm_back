@@ -109,11 +109,26 @@ export class UsuarioService {
         return { message: 'Usuário deletado com sucesso' };
     }
 
+    async reativarUsuario(id: string): Promise<{ message: string }> {
+        const usuarioExiste = await this.usuarioRepository.findById(id);
+        
+        if (!usuarioExiste) {
+            throw new Error('Usuário não encontrado');
+        }
+
+        await this.usuarioRepository.reativar(id);
+        return { message: 'Usuário reativado com sucesso' };
+    }
+
     async login(email: string, senha: string): Promise<{ accessToken: string; refreshToken: string; usuario: Omit<Usuario, 'senha'> }> {
         const usuario = await this.usuarioRepository.findByEmail(email);
         
         if (!usuario) {
             throw new Error('Credenciais inválidas');
+        }
+
+        if (!usuario.ativo) {
+            throw new Error('Usuário desativado');
         }
 
         const senhaValida = await bcrypt.compare(senha, usuario.senha);
