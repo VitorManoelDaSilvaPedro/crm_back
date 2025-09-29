@@ -3,6 +3,7 @@ import departamentoRoutes from "./src/routes/departamentoRoutes";
 import usuarioRoutes from "./src/routes/usuarioRoutes";
 import authRoutes from "./src/routes/authRoutes";
 import boardRoutes from "./src/routes/boardRoutes";
+import etapaRoutes from "./src/routes/etapaRoutes";
 import { conditionalAuthMiddleware } from "./src/middleware/conditionalAuthMiddleware";
 
 const routes = Router();
@@ -19,5 +20,6 @@ routes.use(conditionalAuthMiddleware);
 routes.use(departamentoRoutes);
 routes.use(usuarioRoutes);
 routes.use(boardRoutes);
+routes.use(etapaRoutes);
 
 export default routes;

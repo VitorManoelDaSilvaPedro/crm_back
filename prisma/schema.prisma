@@ -47,4 +47,18 @@ model Board {
   ativo Boolean @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  
+  etapas Etapa[]
+}
+
+model Etapa {
+  id String @id @default(uuid())
+  nome String
+  ordem Int
+  id_board String
+  ativo Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  
+  board Board @relation(fields: [id_board], references: [id])
 }

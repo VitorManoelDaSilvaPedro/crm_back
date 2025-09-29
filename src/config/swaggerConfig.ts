@@ -298,6 +298,66 @@ const options = {
                         }
                     }
                 },
+                Etapa: {
+                    type: 'object',
+                    required: ['id', 'nome', 'ordem', 'id_board', 'ativo'],
+                    properties: {
+                        id: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID único da etapa'
+                        },
+                        nome: {
+                            type: 'string',
+                            description: 'Nome da etapa'
+                        },
+                        ordem: {
+                            type: 'integer',
+                            description: 'Ordem da etapa no board'
+                        },
+                        id_board: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID do board da etapa'
+                        },
+                        ativo: {
+                            type: 'boolean',
+                            description: 'Status ativo/inativo'
+                        },
+                        created_at: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Data de criação'
+                        },
+                        updated_at: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Data de atualização'
+                        }
+                    }
+                },
+                EtapaInput: {
+                    type: 'object',
+                    required: ['nome', 'ordem', 'id_board'],
+                    properties: {
+                        nome: {
+                            type: 'string',
+                            description: 'Nome da etapa',
+                            minLength: 2,
+                            maxLength: 100
+                        },
+                        ordem: {
+                            type: 'integer',
+                            description: 'Ordem da etapa no board',
+                            minimum: 1
+                        },
+                        id_board: {
+                            type: 'string',
+                            format: 'uuid',
+                            description: 'ID do board da etapa'
+                        }
+                    }
+                },
                 Error: {
                     type: 'object',
                     properties: {

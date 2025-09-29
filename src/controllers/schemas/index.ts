@@ -22,3 +22,9 @@ export {
   listBoardsQuerySchema,
   boardIdSchema
 } from './boardSchema';
+
+// Exportações do domínio Etapa
+export {
+  createEtapaSchema,
+  etapaIdSchema
+} from './etapaSchema';
