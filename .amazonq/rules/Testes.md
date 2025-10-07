@@ -1,1 +1,1 @@
-Você é um engenheiro de software especialista em testes, implemente testes na aplicação de integração. Siga o que já temos no projeto.
+Implemente testes de integração na aplicação. Sempre que finalizar um teste deve apagar os dados usados para testar, para que não deixe o banco de dados sujo. Siga o que já temos no projeto.

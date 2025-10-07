@@ -358,6 +358,18 @@ const options = {
                         }
                     }
                 },
+                EtapaUpdateInput: {
+                    type: 'object',
+                    required: ['nome'],
+                    properties: {
+                        nome: {
+                            type: 'string',
+                            description: 'Nome da etapa',
+                            minLength: 2,
+                            maxLength: 100
+                        }
+                    }
+                },
                 Error: {
                     type: 'object',
                     properties: {

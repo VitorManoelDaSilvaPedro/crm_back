@@ -17,7 +17,7 @@ export class EtapaRepository {
 
     async findByBoardId(id_board: string): Promise<Etapa[]> {
         return await this.prisma.etapa.findMany({
-            where: { id_board, ativo: true },
+            where: { id_board },
             orderBy: { ordem: 'asc' }
         });
     }
@@ -31,6 +31,51 @@ export class EtapaRepository {
     async findByOrdemAndBoard(ordem: number, id_board: string): Promise<Etapa | null> {
         return await this.prisma.etapa.findFirst({
             where: { ordem, id_board, ativo: true }
+        });
+    }
+
+    async update(id: string, data: { nome: string }): Promise<Etapa> {
+        return await this.prisma.etapa.update({
+            where: { id },
+            data
+        });
+    }
+
+    async updateOrdem(id: string, ordem: number): Promise<Etapa> {
+        return await this.prisma.etapa.update({
+            where: { id },
+            data: { ordem }
+        });
+    }
+
+    async updateStatus(id: string, ativo: boolean): Promise<Etapa> {
+        return await this.prisma.etapa.update({
+            where: { id },
+            data: { ativo }
+        });
+    }
+
+    async incrementOrdem(id_board: string, ordemMin: number, ordemMax?: number): Promise<void> {
+        await this.prisma.etapa.updateMany({
+            where: {
+                id_board,
+                ordem: ordemMax ? { gte: ordemMin, lte: ordemMax } : { gte: ordemMin }
+            },
+            data: {
+                ordem: { increment: 1 }
+            }
+        });
+    }
+
+    async decrementOrdem(id_board: string, ordemMin: number, ordemMax?: number): Promise<void> {
+        await this.prisma.etapa.updateMany({
+            where: {
+                id_board,
+                ordem: ordemMax ? { gte: ordemMin, lte: ordemMax } : { gte: ordemMin }
+            },
+            data: {
+                ordem: { decrement: 1 }
+            }
         });
     }
 }

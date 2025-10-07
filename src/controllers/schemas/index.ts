@@ -26,5 +26,7 @@ export {
 // Exportações do domínio Etapa
 export {
   createEtapaSchema,
-  etapaIdSchema
+  updateEtapaSchema,
+  etapaIdSchema,
+  reordenarEtapaSchema
 } from './etapaSchema';

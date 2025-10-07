@@ -18,9 +18,26 @@ export const createEtapaSchema = yup.object({
     .uuid('ID do board deve ser um UUID válido')
 }).strict().noUnknown('Campos não permitidos foram enviados');
 
+export const updateEtapaSchema = yup.object({
+  nome: yup
+    .string()
+    .required('Nome é obrigatório')
+    .min(2, 'Nome deve ter pelo menos 2 caracteres')
+    .max(100, 'Nome deve ter no máximo 100 caracteres')
+    .trim()
+}).strict().noUnknown('Campos não permitidos foram enviados');
+
 export const etapaIdSchema = yup.object({
   id: yup
     .string()
     .required('ID é obrigatório')
     .uuid('ID deve ser um UUID válido')
 }).strict().noUnknown('Parâmetros não permitidos foram enviados');
+
+export const reordenarEtapaSchema = yup.object({
+  ordem: yup
+    .number()
+    .required('Ordem é obrigatória')
+    .integer('Ordem deve ser um número inteiro')
+    .min(1, 'Ordem deve ser maior que 0')
+}).strict().noUnknown('Campos não permitidos foram enviados');

@@ -44,9 +44,11 @@ describe("Testes da API de Etapas", () => {
                     }
                 });
             }
-            await prisma.board.delete({
-                where: { id: boardId }
-            });
+            if (boardId) {
+                await prisma.board.delete({
+                    where: { id: boardId }
+                });
+            }
         } catch (error) {
             console.log("Erro ao limpar dados de teste:", error);
         }
@@ -58,6 +60,31 @@ describe("Testes da API de Etapas", () => {
         });
         await DatabaseFactory.disconnect();
     }, 10000);
+
+    it("Listar etapas de um board", async () => {
+        const response = await axios.get(`${BASE_URL}/etapas?id_board=${boardId}`);
+        
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.data)).toBe(true);
+    });
+
+    it("Não listar etapas sem id_board", async () => {
+        try {
+            await axios.get(`${BASE_URL}/etapas`);
+        } catch (error: any) {
+            expect(error.response.status).toBe(400);
+            expect(error.response.data.message).toBe('Parâmetros inválidos');
+        }
+    });
+
+    it("Não listar etapas de board inexistente", async () => {
+        try {
+            await axios.get(`${BASE_URL}/etapas?id_board=550e8400-e29b-41d4-a716-446655440000`);
+        } catch (error: any) {
+            expect(error.response.status).toBe(404);
+            expect(error.response.data.message).toBe('Board não encontrado');
+        }
+    });
 
     it("Criar etapa com dados válidos", async () => {
         const novaEtapa = {
@@ -142,6 +169,148 @@ describe("Testes da API de Etapas", () => {
     });
 
 
+
+    it("Atualizar etapa com dados válidos", async () => {
+        const dadosAtualizacao = {
+            nome: "Etapa Atualizada"
+        };
+
+        const response = await axios.put(`${BASE_URL}/etapas/${etapaId}`, dadosAtualizacao);
+        
+        expect(response.status).toBe(200);
+        expect(response.data.id).toBe(etapaId);
+        expect(response.data.nome).toBe(dadosAtualizacao.nome);
+        expect(response.data.updated_at).not.toBe(response.data.created_at);
+    });
+
+    it("Não atualizar etapa que não existe", async () => {
+        const dadosAtualizacao = {
+            nome: "Etapa Teste"
+        };
+
+        try {
+            await axios.put(`${BASE_URL}/etapas/123e4567-e89b-12d3-a456-426614174000`, dadosAtualizacao);
+        } catch (error: any) {
+            expect(error.response.status).toBe(404);
+            expect(error.response.data.message).toBe('Etapa não encontrada');
+        }
+    });
+
+    it("Desativar etapa existente", async () => {
+        const response = await axios.delete(`${BASE_URL}/etapas/${etapaId}`);
+        
+        expect(response.status).toBe(200);
+        expect(response.data.message).toBe('Etapa desativada com sucesso');
+    });
+
+    it("Listar deve incluir etapas desativadas", async () => {
+        const response = await axios.get(`${BASE_URL}/etapas?id_board=${boardId}`);
+        
+        expect(response.status).toBe(200);
+        const etapaDesativada = response.data.find((e: any) => e.id === etapaId);
+        expect(etapaDesativada).toBeDefined();
+        expect(etapaDesativada.ativo).toBe(false);
+    });
+
+    it("Reativar etapa existente", async () => {
+        const response = await axios.patch(`${BASE_URL}/etapas/${etapaId}/reativar`);
+        
+        expect(response.status).toBe(200);
+        expect(response.data.message).toBe('Etapa reativada com sucesso');
+    });
+
+    it("Não reativar etapa que não existe", async () => {
+        try {
+            await axios.patch(`${BASE_URL}/etapas/123e4567-e89b-12d3-a456-426614174000/reativar`);
+        } catch (error: any) {
+            expect(error.response.status).toBe(404);
+            expect(error.response.data.message).toBe('Etapa não encontrada');
+        }
+    });
+
+    it("Não desativar etapa que não existe", async () => {
+        try {
+            await axios.delete(`${BASE_URL}/etapas/123e4567-e89b-12d3-a456-426614174000`);
+        } catch (error: any) {
+            expect(error.response.status).toBe(404);
+            expect(error.response.data.message).toBe('Etapa não encontrada');
+        }
+    });
+
+    it("Reordenar etapa para cima", async () => {
+        // Criar etapas para testar reordenamento
+        const etapa1 = await axios.post(`${BASE_URL}/etapas`, {
+            nome: "Etapa Ordem 1",
+            ordem: 20,
+            id_board: boardId
+        });
+        const etapa2 = await axios.post(`${BASE_URL}/etapas`, {
+            nome: "Etapa Ordem 2",
+            ordem: 21,
+            id_board: boardId
+        });
+        const etapa3 = await axios.post(`${BASE_URL}/etapas`, {
+            nome: "Etapa Ordem 3",
+            ordem: 22,
+            id_board: boardId
+        });
+        
+        createdEtapaIds.push(etapa1.data.id, etapa2.data.id, etapa3.data.id);
+
+        // Mover etapa3 (ordem 22) para ordem 20
+        const response = await axios.patch(`${BASE_URL}/etapas/${etapa3.data.id}/reordenar`, {
+            ordem: 20
+        });
+
+        expect(response.status).toBe(200);
+        expect(response.data.message).toBe('Etapa reordenada com sucesso');
+        expect(response.data.etapas).toBeDefined();
+        
+        const etapaMovida = response.data.etapas.find((e: any) => e.id === etapa3.data.id);
+        expect(etapaMovida.ordem).toBe(20);
+    });
+
+    it("Reordenar etapa para baixo", async () => {
+        const etapas = await axios.get(`${BASE_URL}/etapas?id_board=${boardId}`);
+        const primeiraEtapa = etapas.data.find((e: any) => e.ordem === 20);
+
+        // Mover primeira etapa para ordem 22
+        const response = await axios.patch(`${BASE_URL}/etapas/${primeiraEtapa.id}/reordenar`, {
+            ordem: 22
+        });
+
+        expect(response.status).toBe(200);
+        const etapaMovida = response.data.etapas.find((e: any) => e.id === primeiraEtapa.id);
+        expect(etapaMovida.ordem).toBe(22);
+    });
+
+    it("Não reordenar com ordem inválida", async () => {
+        try {
+            await axios.patch(`${BASE_URL}/etapas/${etapaId}/reordenar`, {
+                ordem: 0
+            });
+        } catch (error: any) {
+            expect(error.response.status).toBe(400);
+            expect(error.response.data.message).toBe('Dados inválidos');
+        }
+    });
+
+    it("Criar etapa com ordem existente deve reordenar automaticamente", async () => {
+        const etapasAntes = await axios.get(`${BASE_URL}/etapas?id_board=${boardId}`);
+        const quantidadeAntes = etapasAntes.data.length;
+
+        // Criar etapa com ordem que já existe
+        const novaEtapa = await axios.post(`${BASE_URL}/etapas`, {
+            nome: "Etapa Inserida",
+            ordem: 21,
+            id_board: boardId
+        });
+        
+        createdEtapaIds.push(novaEtapa.data.id);
+
+        const etapasDepois = await axios.get(`${BASE_URL}/etapas?id_board=${boardId}`);
+        expect(etapasDepois.data.length).toBe(quantidadeAntes + 1);
+    });
 
     it("Não aceitar campos extras na criação", async () => {
         const etapaComCamposExtras = {
